@@ -1,9 +1,10 @@
 var url = "https://hp-api.herokuapp.com/api/characters";
 var wordsEl = document.getElementById('words');
+var lettersEl = document.getElementById('letters')
 
 queryData();
-nameArr = [];
-singleArr = [];
+var nameArr = [];
+var singleArr = [];
 
 
 function queryData () {
@@ -15,11 +16,11 @@ function queryData () {
             for (var i = 0; i <data.length; i++) {
                 nameArr.push(data[i].name);
             }
-        renderArray();
+        buildArrays();
         })
 };
 
-function renderArray () {
+function buildArrays () {
     const randomWords = [];
     for (let i = 0; i < 5; i++) {
         randomWords.push(nameArr[Math.floor((Math.random() * nameArr.length))]);
@@ -27,21 +28,26 @@ function renderArray () {
         li.innerHTML = randomWords[i];
         wordsEl.appendChild(li);
     }
-    split(randomWords);
+
+    singleArr = randomWords.join('').replace(/\s+/g, '');
+    splitArr = singleArr.split('');
+    console.log(splitArr); 
+    renderLetters(splitArr)
 }
 
-function split (randomWords) {
-    for (let i = 0; i < randomWords.length; i++) {
-        singleArr.push(randomWords[i].split(""));
-        let li = document.createElement('li');
-        li.innerHTML = singleArr[i];
-        wordsEl.appendChild(li);
+function renderLetters (splitArr) {
+    const capitalArr = splitArr.map(letters => {
+        return letters.toUpperCase();
+      });
+
+    for (let i = 0; i < splitArr.length; i++) {
+        let div = document.createElement('div');
+        let h3 = document.createElement('h3');
+        lettersEl.append(div);
+        h3.innerHTML = capitalArr[i];
+        div.append(h3);
     }
+
+
 }
-
-console.log(singleArr);
-
-
-
-
 
