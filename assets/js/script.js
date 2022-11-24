@@ -23,7 +23,7 @@ function queryData () {
 
 function buildArrays () {
     const randomWords = [];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 2; i++) {
         randomWords.push(nameArr[Math.floor((Math.random() * nameArr.length))]);
         let li = document.createElement('li')
         li.innerHTML = randomWords[i];

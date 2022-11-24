@@ -1,1 +1,1 @@
-# word-game
+Does my SSH key work?
