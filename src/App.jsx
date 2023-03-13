@@ -1,12 +1,11 @@
 import React from 'react'
-import Anagram from './components/Anagram.jsx'
+import Game from './components/Game.jsx'
 
 function App() {
 
   return (
-    <div className="App">
-      <h1>React App</h1>
-      <Anagram />
+    <div>
+      <Game />
     </div>
   )
 }
