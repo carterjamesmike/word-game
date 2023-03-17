@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { normalMode } from '../data/normal.js'
 import { useForm } from 'react-hook-form'
 
@@ -8,7 +8,8 @@ const Game = () => {
 const [wordOne, setWordOne] = useState('')
 const [wordTwo, setWordTwo] = useState('')
 const [shuffledWord, setShuffledWord] = useState('')
-const shuffledWordArray = shuffledWord.split('')
+const [letters, setLetters] = useState([])
+const [letterEffect , setLetterEffect] = useState([])
 const [userInputOne, setUserInputOne] = useState('')
 const [userInputTwo, setUserInputTwo] = useState('')
 const [finalAnswer, setFinalAnswer] = useState('')
@@ -35,22 +36,16 @@ const shuffle = (randomWordOne, randomWordTwo) => {
     const shuffledLetters = combinedLettersArr.sort(() => Math.random() - 0.5)
     const shuffledWord = shuffledLetters.join('').toUpperCase().replace(/\s/g, '')
     setShuffledWord(shuffledWord)
+    const shuffledWordArray = shuffledWord.split('')
+    setLetters(shuffledWordArray)
 };
 
 //Function that will compare the user input to the two words
 const compareWords = () => {
-    console.log(`User Input One: ${userInputOne}`)
-    console.log(`User Input Two: ${userInputTwo}`)
-    console.log(`Word One: ${wordOne.name}`)
-    console.log(`Word Two: ${wordTwo.name}`)
     const combinedOne = userInputOne + userInputTwo
-    const guessOne = combinedOne.toUpperCase().replace(/\s/g, '')
-    const cpmbinedTwo = userInputTwo + userInputOne
-    const guessTwo = cpmbinedTwo.toUpperCase().replace(/\s/g, '')
-
-    console.log(`Guess One: ${guessOne}`)
-    console.log(`Guess Two: ${guessTwo}`)
-    console.log(`Final Answer: ${finalAnswer}`)
+    const guessOne = combinedOne.replace(/\s/g, '')
+    const combinedTwo = userInputTwo + userInputOne
+    const guessTwo = combinedTwo.replace(/\s/g, '')
 
     if (guessOne === finalAnswer || guessTwo === finalAnswer) {
         alert('You Win!')
@@ -58,6 +53,25 @@ const compareWords = () => {
         alert('Try Again')
     }
 }
+
+const handleInputChange = (e) => {
+    const value = e.target.value;
+    setUserInputOne(value.toUpperCase());
+    setUserInputTwo(value.toUpperCase());
+    };
+
+
+useEffect(() => {
+    setLetters(
+      letters.map((letter) =>
+        userInputOne.includes(letter) ? (
+          <span className="text-green-500">{letter}</span>
+        ) : (
+          letter
+        )
+      )
+    );
+  }, [userInputOne]);
 
 
 
@@ -71,8 +85,12 @@ const compareWords = () => {
             <h1>{wordTwo.name}</h1>
             <h1>{shuffledWord}</h1>
         </div>
-        <div className='flex flex-row flex-wrap justify-center '>
-            {/* Map through the shuffledWordArray to create a container for each item */}
+
+    <div className='flex flex-row flex-wrap justify-center'>
+    {letters}
+    </div>
+
+        {/* <div className='flex flex-row flex-wrap justify-center '>
             {shuffledWordArray.map((letter, index) => {
                 return (
                     <div key={index} className="h-4 w-4 p-4 m-4">
@@ -80,19 +98,28 @@ const compareWords = () => {
                         </div>
                 )
             })}
+        </div> */}
 
-        </div>
+{/* third]) */}
+        
+
+
+
         {/* Two input fields that will compare user inputs to wordOne and wordTwo */}
         <form onSubmit={handleSubmit(compareWords)}>
         <div className='flex flex-col'>
             <input
             // {...register('userInputOne', { required: true })}
-            onChange={(e) => setUserInputOne(e.target.value)}
+            value={userInputOne}
+            // onChange={(e) => setUserInputOne(e.target.value.toUpperCase())}
+            onChange={handleInputChange}
             className='p-2 m-2'
              type='text' />
             <input
             // {...register('userInputTwo', { required: true })}
-            onChange={(e) => setUserInputTwo(e.target.value)}
+            value={userInputTwo}
+            // onChange={(e) => setUserInputTwo(e.target.value.toUpperCase())}
+            onChange={handleInputChange}
             className='p-2 m-2'
              type='text' />
         </div>
