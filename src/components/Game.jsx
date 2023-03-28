@@ -14,6 +14,7 @@ const [userInputOne, setUserInputOne] = useState('')
 const [userInputTwo, setUserInputTwo] = useState('')
 const [finalAnswer, setFinalAnswer] = useState('')
 const { register, handleSubmit } = useForm()
+const [shuffledWordArray, setShuffledWordArray] = useState([])
 
 //Function to randomoly select two words from the normal mode array
 const randomWords = () => {
@@ -43,9 +44,12 @@ const shuffle = (randomWordOne, randomWordTwo) => {
 //Function that will compare the user input to the two words
 const compareWords = () => {
     const combinedOne = userInputOne + userInputTwo
-    const guessOne = combinedOne.replace(/\s/g, '')
+    const guessOne = combinedOne.replace(/\s/g, '').toUpperCase()
     const combinedTwo = userInputTwo + userInputOne
-    const guessTwo = combinedTwo.replace(/\s/g, '')
+    const guessTwo = combinedTwo.replace(/\s/g, '').toUpperCase()
+    console.log(guessOne)
+    console.log(guessTwo)
+    console.log(finalAnswer)
 
     if (guessOne === finalAnswer || guessTwo === finalAnswer) {
         alert('You Win!')
@@ -54,24 +58,26 @@ const compareWords = () => {
     }
 }
 
-const handleInputChange = (e) => {
-    const value = e.target.value;
-    setUserInputOne(value.toUpperCase());
-    setUserInputTwo(value.toUpperCase());
+const handleInputChange1 = (e) => {
+    setUserInputOne(e.target.value)
+    };
+
+const handleInputChange2 = (e) => {
+    setUserInputTwo(e.target.value)
     };
 
 
-useEffect(() => {
-    setLetters(
-      letters.map((letter) =>
-        userInputOne.includes(letter) ? (
-          <span className="text-green-500">{letter}</span>
-        ) : (
-          letter
-        )
-      )
-    );
-  }, [userInputOne]);
+// useEffect(() => {
+//     setLetters(
+//       letters.map((letter) =>
+//         userInputOne.includes(letter) ? (
+//           <span className="text-green-500">{letter}</span>
+//         ) : (
+//           letter
+//         )
+//       )
+//     );
+//   }, [userInputOne]);
 
 
 
@@ -86,19 +92,19 @@ useEffect(() => {
             <h1>{shuffledWord}</h1>
         </div>
 
-    <div className='flex flex-row flex-wrap justify-center'>
+     {/* <div className='flex flex-row flex-wrap justify-center '>
     {letters}
-    </div>
+    </div> */}
 
-        {/* <div className='flex flex-row flex-wrap justify-center '>
-            {shuffledWordArray.map((letter, index) => {
+        <div className='flex flex-row flex-wrap justify-center '>
+            {letters.map((letter, index) => {
                 return (
-                    <div key={index} className="h-4 w-4 p-4 m-4">
+                    <div key={index} className="h-4 w-4 m-4">
                         <h1>{letter}</h1>
                         </div>
                 )
             })}
-        </div> */}
+        </div>
 
 {/* third]) */}
         
@@ -112,14 +118,14 @@ useEffect(() => {
             // {...register('userInputOne', { required: true })}
             value={userInputOne}
             // onChange={(e) => setUserInputOne(e.target.value.toUpperCase())}
-            onChange={handleInputChange}
+            onChange={handleInputChange1}
             className='p-2 m-2'
              type='text' />
             <input
             // {...register('userInputTwo', { required: true })}
             value={userInputTwo}
             // onChange={(e) => setUserInputTwo(e.target.value.toUpperCase())}
-            onChange={handleInputChange}
+            onChange={handleInputChange2}
             className='p-2 m-2'
              type='text' />
         </div>
