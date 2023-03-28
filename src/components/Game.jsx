@@ -9,12 +9,15 @@ const [wordOne, setWordOne] = useState('')
 const [wordTwo, setWordTwo] = useState('')
 const [shuffledWord, setShuffledWord] = useState('')
 const [letters, setLetters] = useState([])
-const [letterEffect , setLetterEffect] = useState([])
 const [userInputOne, setUserInputOne] = useState('')
 const [userInputTwo, setUserInputTwo] = useState('')
 const [finalAnswer, setFinalAnswer] = useState('')
 const { register, handleSubmit } = useForm()
 const [shuffledWordArray, setShuffledWordArray] = useState([])
+const [guessArrayOne, setGuessArrayOne] = useState([])
+const [guessArrayTwo, setGuessArrayTwo] = useState([])
+const [currentGuess, setCurrentGuess] = useState([])
+const [assistArray, setAssistArray] = useState([])
 
 //Function to randomoly select two words from the normal mode array
 const randomWords = () => {
@@ -60,25 +63,38 @@ const compareWords = () => {
 
 const handleInputChange1 = (e) => {
     setUserInputOne(e.target.value)
+    addToGuessArrayOne(e)
     };
 
 const handleInputChange2 = (e) => {
     setUserInputTwo(e.target.value)
+    addToGuessArrayTwo(e)
     };
 
+useEffect(() => {
+    // console.log(guessArrayOne)
+    // console.log(guessArrayTwo)
+    // console.log(currentGuess)
+    combineGuessArrays()
+}, [guessArrayOne, guessArrayTwo, currentGuess])
 
-// useEffect(() => {
-//     setLetters(
-//       letters.map((letter) =>
-//         userInputOne.includes(letter) ? (
-//           <span className="text-green-500">{letter}</span>
-//         ) : (
-//           letter
-//         )
-//       )
-//     );
-//   }, [userInputOne]);
 
+const addToGuessArrayOne = (e) => {
+    setGuessArrayOne(e.target.value)
+    combineGuessArrays()
+}
+
+const addToGuessArrayTwo = (e) => {
+    setGuessArrayTwo(e.target.value)
+    combineGuessArrays()
+}
+
+//Function that will split, capitalize, and combine guessArrayOne and guessArrayTwo into one array
+const combineGuessArrays = () => {
+    const guessArrayCombine = guessArrayOne + guessArrayTwo
+    const assistArray = guessArrayCombine.replace(/\s/g, '').toUpperCase()
+    setCurrentGuess(assistArray)
+}
 
 
 
@@ -92,10 +108,6 @@ const handleInputChange2 = (e) => {
             <h1>{shuffledWord}</h1>
         </div>
 
-     {/* <div className='flex flex-row flex-wrap justify-center '>
-    {letters}
-    </div> */}
-
         <div className='flex flex-row flex-wrap justify-center '>
             {letters.map((letter, index) => {
                 return (
@@ -106,25 +118,22 @@ const handleInputChange2 = (e) => {
             })}
         </div>
 
-{/* third]) */}
+        <div>
+            <h1>{currentGuess}</h1>
+        </div>
+
+
         
-
-
-
         {/* Two input fields that will compare user inputs to wordOne and wordTwo */}
         <form onSubmit={handleSubmit(compareWords)}>
         <div className='flex flex-col'>
             <input
-            // {...register('userInputOne', { required: true })}
             value={userInputOne}
-            // onChange={(e) => setUserInputOne(e.target.value.toUpperCase())}
             onChange={handleInputChange1}
             className='p-2 m-2'
              type='text' />
             <input
-            // {...register('userInputTwo', { required: true })}
             value={userInputTwo}
-            // onChange={(e) => setUserInputTwo(e.target.value.toUpperCase())}
             onChange={handleInputChange2}
             className='p-2 m-2'
              type='text' />
