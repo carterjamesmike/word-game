@@ -124,8 +124,8 @@ const combineGuessArrays = () => {
 
         
         <div>
-            <h1>{wordOne.name}</h1>
-            <h1>{wordTwo.name}</h1>
+            {/* <h1>{wordOne.name}</h1>
+            <h1>{wordTwo.name}</h1> */}
             <h1>{shuffledWord}</h1>
         </div>
 
