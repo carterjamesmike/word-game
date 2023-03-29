@@ -13,19 +13,28 @@ const [userInputOne, setUserInputOne] = useState('')
 const [userInputTwo, setUserInputTwo] = useState('')
 const [finalAnswer, setFinalAnswer] = useState('')
 const { register, handleSubmit } = useForm()
-
 const [guessArrayOne, setGuessArrayOne] = useState([])
 const [guessArrayTwo, setGuessArrayTwo] = useState([])
 const [currentGuess, setCurrentGuess] = useState([])
+const [gameMode, setGameMode] = useState(false)
 
 
 //Function to randomoly select two words from the normal mode array
 const randomWords = () => {
+    setGameMode(true)
     const randomWordOne = names[Math.floor(Math.random() * names.length)]
     const randomWordTwo = names[Math.floor(Math.random() * names.length)]
     setWordOne(randomWordOne)
     setWordTwo(randomWordTwo)
     shuffle(randomWordOne, randomWordTwo)
+}
+
+const randomWord = () => {
+    setGameMode(false)
+    const randomWordOne = names[Math.floor(Math.random() * names.length)]
+    setWordOne(randomWordOne.name)
+    console.log(randomWordOne)
+    shuffle1(randomWordOne)
 }
 
 //Function that takes the two words and randomoly shuffles the letters into one word without spaces and all caps
@@ -42,6 +51,18 @@ const shuffle = (randomWordOne, randomWordTwo) => {
     const shuffledWordArray = shuffledWord.split('')
     setLetters(shuffledWordArray)
 };
+
+const shuffle1 = (randomWordOne) => {
+    const wordOneFinal = randomWordOne.name.toUpperCase().replace(/\s/g, '')
+    setFinalAnswer(wordOneFinal)
+    const wordOneLetters = randomWordOne.name.split('')
+    const shuffledLetters = wordOneLetters.sort(() => Math.random() - 0.5)
+    const shuffledWord = shuffledLetters.join('').toUpperCase().replace(/\s/g, '')
+    setShuffledWord(shuffledWord)
+    const shuffledWordArray = shuffledWord.split('')
+    setLetters(shuffledWordArray)
+};
+
 
 //Function that will compare the user input to the two words
 const compareWords = () => {
@@ -96,10 +117,15 @@ const combineGuessArrays = () => {
   return (
     <div className='bg-gray-400'>
         <h1>Anagram</h1>
-        <button onClick={randomWords}>Start Game</button>
+        <div className='flex flex-col'>
+        <button onClick={randomWord}>New One Word Game</button>
+        <button onClick={randomWords}>New Two Word Game</button>            
+        </div>
+
+        
         <div>
-            <h1>{wordOne.name}</h1>
-            <h1>{wordTwo.name}</h1>
+            {/* <h1>{wordOne.name}</h1>
+            <h1>{wordTwo.name}</h1> */}
             <h1>{shuffledWord}</h1>
         </div>
 
@@ -130,7 +156,7 @@ const combineGuessArrays = () => {
             <input
             value={userInputTwo}
             onChange={handleInputChange2}
-            className='p-2 m-2'
+            className={!gameMode ? 'hidden' : 'p-2 m-2'}
              type='text' />
         </div>
         <button type='submit'>Submit</button>                                           
