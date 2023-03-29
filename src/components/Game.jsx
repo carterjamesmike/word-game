@@ -117,8 +117,11 @@ const combineGuessArrays = () => {
   return (
     <div className='bg-gray-400'>
         <h1>Anagram</h1>
+        <div className='flex flex-col'>
         <button onClick={randomWord}>New One Word Game</button>
-        <button onClick={randomWords}>New Two Word Game</button>
+        <button onClick={randomWords}>New Two Word Game</button>            
+        </div>
+
         
         <div>
             <h1>{wordOne.name}</h1>
