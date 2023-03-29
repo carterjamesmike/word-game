@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { normalMode } from '../data/normal.js'
+import { nameData } from '../data/nameData.js'
 import { useForm } from 'react-hook-form'
 
-const normal = normalMode;
+const names = nameData;
 
 const Game = () => {
 const [wordOne, setWordOne] = useState('')
@@ -13,19 +13,18 @@ const [userInputOne, setUserInputOne] = useState('')
 const [userInputTwo, setUserInputTwo] = useState('')
 const [finalAnswer, setFinalAnswer] = useState('')
 const { register, handleSubmit } = useForm()
-const [shuffledWordArray, setShuffledWordArray] = useState([])
+
 const [guessArrayOne, setGuessArrayOne] = useState([])
 const [guessArrayTwo, setGuessArrayTwo] = useState([])
 const [currentGuess, setCurrentGuess] = useState([])
-const [assistArray, setAssistArray] = useState([])
+
 
 //Function to randomoly select two words from the normal mode array
 const randomWords = () => {
-    const randomWordOne = normal[Math.floor(Math.random() * normal.length)]
-    const randomWordTwo = normal[Math.floor(Math.random() * normal.length)]
+    const randomWordOne = names[Math.floor(Math.random() * names.length)]
+    const randomWordTwo = names[Math.floor(Math.random() * names.length)]
     setWordOne(randomWordOne)
     setWordTwo(randomWordTwo)
-    //console.log(randomWordOne.name)
     shuffle(randomWordOne, randomWordTwo)
 }
 
@@ -72,9 +71,6 @@ const handleInputChange2 = (e) => {
     };
 
 useEffect(() => {
-    // console.log(guessArrayOne)
-    // console.log(guessArrayTwo)
-    // console.log(currentGuess)
     combineGuessArrays()
 }, [guessArrayOne, guessArrayTwo, currentGuess])
 
@@ -95,7 +91,6 @@ const combineGuessArrays = () => {
     const assistArray = guessArrayCombine.replace(/\s/g, '').toUpperCase()
     setCurrentGuess(assistArray)
 }
-
 
 
   return (

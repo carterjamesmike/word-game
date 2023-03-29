@@ -1,4 +1,4 @@
-export const normalMode = 
+export const nameData = 
 [
     {
       "id": 1,
