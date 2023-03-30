@@ -17,6 +17,7 @@ const [guessArrayOne, setGuessArrayOne] = useState([])
 const [guessArrayTwo, setGuessArrayTwo] = useState([])
 const [currentGuess, setCurrentGuess] = useState([])
 const [gameMode, setGameMode] = useState(false)
+const [displayAnswer, setDisplayAnswer] = useState(false)
 
 
 //Function to randomoly select two words from the normal mode array
@@ -32,13 +33,15 @@ const randomWords = () => {
 const randomWord = () => {
     setGameMode(false)
     const randomWordOne = names[Math.floor(Math.random() * names.length)]
-    setWordOne(randomWordOne.name)
+    setWordOne(randomWordOne)
     console.log(randomWordOne)
     shuffle1(randomWordOne)
 }
 
 //Function that takes the two words and randomoly shuffles the letters into one word without spaces and all caps
 const shuffle = (randomWordOne, randomWordTwo) => {
+    setDisplayAnswer(false)
+    setCurrentGuess('')
     const combinedWords = randomWordOne.name + randomWordTwo.name
     const joinedAnswer = combinedWords.toUpperCase().replace(/\s/g, '')
     setFinalAnswer(joinedAnswer)
@@ -53,6 +56,8 @@ const shuffle = (randomWordOne, randomWordTwo) => {
 };
 
 const shuffle1 = (randomWordOne) => {
+    setDisplayAnswer(false)
+    setCurrentGuess('')
     const wordOneFinal = randomWordOne.name.toUpperCase().replace(/\s/g, '')
     setFinalAnswer(wordOneFinal)
     const wordOneLetters = randomWordOne.name.split('')
@@ -91,10 +96,6 @@ const handleInputChange2 = (e) => {
     addToGuessArrayTwo(e)
     };
 
-useEffect(() => {
-    combineGuessArrays()
-}, [guessArrayOne, guessArrayTwo, currentGuess])
-
 
 const addToGuessArrayOne = (e) => {
     setGuessArrayOne(e.target.value)
@@ -113,23 +114,29 @@ const combineGuessArrays = () => {
     setCurrentGuess(assistArray)
 }
 
+const giveUp = () => {
+    setDisplayAnswer(true)
+}
+
+useEffect(() => {
+    combineGuessArrays()
+}, [guessArrayOne, guessArrayTwo, currentGuess])
 
   return (
-    <div className='bg-gray-400'>
-        <h1>Anagram</h1>
-        <div className='flex flex-col'>
-        <button onClick={randomWord}>New One Word Game</button>
-        <button onClick={randomWords}>New Two Word Game</button>            
+    <div className='bg-gray-800'>
+        <h1 className='text-gray-200 poppins font-bold'>Harry Pottter Anagram</h1>
+
+        <div className='inline-flex'>
+            <button className='bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r m-2' onClick={randomWord}>New One Word Game</button>
+            <button className='bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r m-2' onClick={randomWords}>New Two Word Game</button>            
         </div>
 
         
         <div>
-            {/* <h1>{wordOne.name}</h1>
-            <h1>{wordTwo.name}</h1> */}
-            <h1>{shuffledWord}</h1>
+            <h1 className='poppins text-gray-300 font-bold text-l'>{shuffledWord}</h1>
         </div>
 
-        <div className='flex flex-row flex-wrap justify-center '>
+        <div className='flex flex-row flex-wrap justify-center poppins text-gray-300 font-bold text-2xl'>
             {letters.map((letter, index) => {
                 return (
                     <div key={index} className="h-4 w-4 m-4">
@@ -140,7 +147,7 @@ const combineGuessArrays = () => {
         </div>
 
         <div>
-            <h1>{currentGuess}</h1>
+            <h1 className='text-gray-300 poppins font-bold'>{currentGuess}</h1>
         </div>
 
 
@@ -151,16 +158,24 @@ const combineGuessArrays = () => {
             <input
             value={userInputOne}
             onChange={handleInputChange1}
-            className='p-2 m-2'
+            className='p-2 m-2 bg-slate-300'
              type='text' />
             <input
             value={userInputTwo}
             onChange={handleInputChange2}
-            className={!gameMode ? 'hidden' : 'p-2 m-2'}
+            className={!gameMode ? 'hidden' : 'p-2 m-2 bg-slate-300'}
              type='text' />
         </div>
-        <button type='submit'>Submit</button>                                           
+         <div className='flex flex-row'>
+        <button className='bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r w-[100px]' type='submit'>Submit</button> 
+        
+         </div>
+                                         
         </form>
+        <button className='bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r w-[100px] mt-2' onClick={giveUp}>Give Up</button>     
+        <div className={!displayAnswer ? 'hidden' : 'p2'}>
+            {!gameMode ? <h1 className='text-gray-300 font-bold poppins'>{wordOne.name}</h1> : <h1 className='text-gray-300 font-bold poppins'>{wordOne.name} {wordTwo.name}</h1>}
+        </div>
 
 
     </div>
