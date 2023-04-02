@@ -121,6 +121,27 @@ const Game = () => {
     setDisplayAnswer(true);
   };
 
+  const reShuffle = () => {
+    if (gameMode === true) {
+      shuffle(wordOne, wordTwo);
+    } else {
+      shuffle1(wordOne);
+    }
+  };
+
+  const hint = () => {
+    if (gameMode === true) {
+      const hintArray1 = wordOne.name.split("");
+      const hintArray2 = wordTwo.name.split("");
+      alert(
+        `The first letter of the first name is ${hintArray1[0]} and the first letter of the second name is${hintArray2[0]}`
+      );
+    } else { 
+      const hintArray3 = wordOne.name.split("");
+      alert(`The first letter is ${hintArray3[0]}`);
+    }
+  };
+
   useEffect(() => {
     combineGuessArrays();
   }, [guessArrayOne, guessArrayTwo, currentGuess]);
@@ -128,13 +149,13 @@ const Game = () => {
   return (
     <div className="bg-gray-800">
       <div className="border border-red-800">
-        <h1 className="text-gray-200 poppins font-bold">
+        <h1 className="text-gray-200 poppins font-bold text-center">
           Harry Pottter Anagram
         </h1>
 
-        <div className="inline-flex">
+        <div className="text-center">
           <button
-            className="bg-[#DB4AC7] hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r m-2"
+            className="bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r m-2"
             onClick={randomWord}
           >
             New One Word Game
@@ -167,7 +188,7 @@ const Game = () => {
           <h1 className="text-gray-300 poppins font-bold">{currentGuess}</h1>
         </div>
 
-        <form onSubmit={handleSubmit(compareWords)}>
+        <form className="flex justify-center" onSubmit={handleSubmit(compareWords)}>
           <div className="flex flex-col">
             <input
               value={userInputOne}
@@ -182,21 +203,37 @@ const Game = () => {
               type="text"
             />
           </div>
-          <div className="flex flex-row">
+          <div>
             <button
-              className="bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r w-[100px]"
+              className="bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r w-[100px] mt-2"
               type="submit"
             >
               Submit
-            </button>
+            </button>            
           </div>
+
         </form>
+        <div className="flex justify-center">
         <button
-          className="bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r w-[100px] mt-2"
+          className="bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r w-[100px] m-2"
           onClick={giveUp}
         >
           Give Up
-        </button>
+        </button> 
+        <button
+          className="bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r w-[100px] m-2"
+          onClick={reShuffle}
+        >
+          Reshuffle
+        </button>     
+        <button
+          className="bg-blue-300 hover:bg-blue-400 text-gray-800 font-bold py-2 px-4 rounded-r w-[100px] m-2"
+          onClick={hint}
+        >
+          Hint
+        </button>         
+        </div>
+
         <div className={!displayAnswer ? "hidden" : "p2"}>
           {!gameMode ? (
             <h1 className="text-gray-300 font-bold poppins">{wordOne.name}</h1>
